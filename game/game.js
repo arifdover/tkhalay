@@ -10,6 +10,11 @@ const CX = 540, CY = 790;              // halka merkezi
 const RY = C.RING_Y_RATIO;
 const cv = document.getElementById("game");
 const ctx = cv.getContext("2d");
+function fitCanvas() {   // pencereye sığdır (oran korunur)
+  const sc = Math.min(window.innerWidth / W, window.innerHeight / H);
+  cv.style.width = Math.floor(W * sc) + "px"; cv.style.height = Math.floor(H * sc) + "px";
+}
+fitCanvas(); window.addEventListener("resize", fitCanvas);
 const FONT = '"Segoe UI", "Noto Sans", Arial, sans-serif';
 
 // ---------------------------------------------------------------- yardımcılar
@@ -677,7 +682,7 @@ const Music = (() => {
 
 // ---------------------------------------------------------------- köprü bağlantısı (WebSocket)
 const bridgeStatus = document.getElementById("bridgeStatus");
-(function connect() {
+if (!window.DEMO) (function connect() {
   let ws;
   try { ws = new WebSocket(C.BRIDGE_URL); } catch (e) { setTimeout(connect, 3000); return; }
   ws.onopen = () => { bridgeStatus.textContent = "bağlı ✓"; bridgeStatus.style.color = "#80ed99"; };
@@ -699,7 +704,9 @@ const Sim = (() => {
     const u = { id: name.toLowerCase(), name }; pool.push(u); return u;
   }
   const el = document.getElementById("sim");
-  if (/[?&]sim=1/.test(location.search)) el.style.display = "block";
+  if (/[?&]sim=1/.test(location.search) || (window.DEMO && innerWidth > 700)) el.style.display = "block";
+  const tgl = document.getElementById("simToggle");
+  if (tgl) { tgl.style.display = "block"; tgl.onclick = () => { el.style.display = el.style.display === "block" ? "none" : "block"; }; }
   document.addEventListener("keydown", (e) => { if (e.key === "d" || e.key === "D") el.style.display = el.style.display === "block" ? "none" : "block"; });
   el.querySelectorAll("[data-c]").forEach(b => b.onclick = () => { for (let i = 0; i < +b.dataset.c; i++) handleEvent({ type: "chat", user: user(), text: rand(MSG) }); });
   el.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { const [n, c] = b.dataset.g.split(","); handleEvent({ type: "gift", user: user(), giftName: n, coins: +c }); });
@@ -728,6 +735,11 @@ const Sim = (() => {
   };
 })();
 window.Sim = Sim;
+if (window.DEMO) {   // paylaşılabilir demo: kendi kendine kalabalıklaşsın
+  document.getElementById("rate").dispatchEvent(new Event("input"));
+  Sim.setAuto(window.DEMO_RATE || 90);
+  for (let i = 0; i < 25; i++) document.querySelector('[data-c="1"]').click();
+}
 
 // ---------------------------------------------------------------- ana döngü
 let last = performance.now(), fpsAcc = 0, fpsN = 0;
