@@ -5,6 +5,6 @@
 //  Karakterlerin zıplaması bu tempoya göre ayarlanır.
 // =====================================================================
 window.PLAYLIST = [
-  // { file: "music/halay1.mp3", bpm: 120 },
+  { file: "music/halay1.mp3", bpm: 111 },
   // { file: "music/halay2.mp3", bpm: 128 },
 ];

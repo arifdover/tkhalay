@@ -663,13 +663,15 @@ const Music = (() => {
   function next() {
     if (!list.length) return;
     idx++; if (idx >= order.length) { shuffle(); idx = 0; }
+    let guard = 0; while (bad.has(order[idx]) && guard++ < list.length) { idx++; if (idx >= order.length) idx = 0; }
     const t = list[order[idx]];
     bpm = t.bpm || C.DEFAULT_BPM;
     audio.src = t.file; audio.playbackRate = rate;
     audio.play().catch(() => { startEl.style.display = "flex"; });
   }
   audio.addEventListener("ended", next);
-  audio.addEventListener("error", () => setTimeout(next, 1000));
+  const bad = new Set();   // açılamayan dosyalar atlanır
+  audio.addEventListener("error", () => { bad.add(order[idx]); if (bad.size < list.length) setTimeout(next, 500); });
   startEl.addEventListener("click", () => { startEl.style.display = "none"; audio.play().catch(() => {}); });
   if (list.length) { shuffle(); next(); }
   return {
