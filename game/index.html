@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Coşuyoruz</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; font-family: "Segoe UI", Arial, sans-serif; }
+  #game { height: 100vh; width: auto; aspect-ratio: 1080 / 1920; display: block; }
+  #start { position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+           background: rgba(0,0,0,.55); color: #fff; font-size: 22px; cursor: pointer; z-index: 5; }
+  #sim { position: fixed; top: 10px; left: 10px; width: 250px; background: rgba(20,20,28,.94); color: #eee;
+         border-radius: 10px; padding: 12px; font-size: 13px; display: none; z-index: 10; box-shadow: 0 4px 20px #000a; }
+  #sim h3 { margin: 0 0 8px; font-size: 14px; }
+  #sim button { margin: 2px 0; width: 100%; padding: 6px; border: 0; border-radius: 6px; background: #3a3a4c; color: #fff; cursor: pointer; font-size: 13px; }
+  #sim button:hover { background: #50506a; }
+  #sim .row { display: flex; gap: 4px; } #sim .row button { flex: 1; }
+  #sim input[type=range] { width: 100%; }
+  #sim .muted { color: #999; font-size: 12px; margin-top: 6px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<canvas id="game" width="1080" height="1920"></canvas>
+<div id="start">▶ Müziği başlatmak için tıkla</div>
+
+<div id="sim">
+  <h3>🎛 Test paneli <span style="color:#888;font-weight:normal">(D ile aç/kapa)</span></h3>
+  <div class="row"><button data-c="1">+1 yorum</button><button data-c="10">+10</button><button data-c="50">+50</button></div>
+  <div class="row"><button id="bKiz">"kız" yaz</button><button id="bErkek">"erkek" yaz</button></div>
+  <div class="row"><button id="bLike">Beğeni ×20</button><button id="bFollow">Takip</button></div>
+  <div class="row"><button data-g="Gül,1">🌹 Gül</button><button data-g="Donut,30">🍩 30</button></div>
+  <div class="row"><button data-g="Kalp Eller,100">🫶 100</button><button data-g="Aslan,29999">🦁 Aslan</button></div>
+  <div style="margin-top:8px">Otomatik akış: <b id="rateLbl">0</b> yorum/dk</div>
+  <input id="rate" type="range" min="0" max="600" step="10" value="0">
+  <button id="bClear">Halayı boşalt</button>
+  <button id="bNext">Sonraki şarkı</button>
+  <div class="muted">Köprü: <b id="bridgeStatus">bağlı değil</b><br>Oyuncu: <b id="cnt">0</b> · FPS: <b id="fps">0</b></div>
+</div>
+
+<script src="config.js"></script>
+<script src="playlist.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
