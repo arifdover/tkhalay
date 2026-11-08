@@ -666,7 +666,7 @@ const Music = (() => {
     let guard = 0; while (bad.has(order[idx]) && guard++ < list.length) { idx++; if (idx >= order.length) idx = 0; }
     const t = list[order[idx]];
     bpm = t.bpm || C.DEFAULT_BPM;
-    audio.src = t.file; audio.playbackRate = rate;
+    audio.src = (window.MUSIC_BASE || "") + t.file; audio.playbackRate = rate;
     audio.play().catch(() => { startEl.style.display = "flex"; });
   }
   audio.addEventListener("ended", next);
