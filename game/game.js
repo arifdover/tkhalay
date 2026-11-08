@@ -667,12 +667,15 @@ const Music = (() => {
     const t = list[order[idx]];
     bpm = t.bpm || C.DEFAULT_BPM;
     audio.src = (window.MUSIC_BASE || "") + t.file; audio.playbackRate = rate;
-    audio.play().catch(() => { startEl.style.display = "flex"; });
+    audio.play().catch(() => { blocked = true; });
   }
   audio.addEventListener("ended", next);
   const bad = new Set();   // açılamayan dosyalar atlanır
   audio.addEventListener("error", () => { bad.add(order[idx]); if (bad.size < list.length) setTimeout(next, 500); });
-  startEl.addEventListener("click", () => { startEl.style.display = "none"; audio.play().catch(() => {}); });
+  // Tarayıcı sesli otomatik oynatmayı engellerse: ilk dokunuş/tık/tuşta müzik başlar (OBS'de engel yok)
+  let blocked = false;
+  const unlock = () => { if (blocked || audio.paused) { blocked = false; audio.play().catch(() => { blocked = true; }); } };
+  ["pointerdown", "touchstart", "keydown"].forEach(ev => window.addEventListener(ev, unlock, { capture: true, passive: true }));
   if (list.length) { shuffle(); next(); }
   return {
     next,
