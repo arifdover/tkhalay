@@ -1,0 +1,42 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coşuyoruz</title>
+<style>
+  :root { --bg: #000; --panel: rgba(20,20,28,.94); --fg: #eee; --btn: #3a3a4c; --btn-hover: #50506a; --muted: #999; color-scheme: dark; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: "Segoe UI", Arial, sans-serif; }
+  #game { display: block; }
+  #start { display: none; }
+  #simToggle { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); right: calc(10px + env(safe-area-inset-right, 0px)); z-index: 11; display: none;
+               background: var(--panel); color: var(--fg); border: 1px solid #555; border-radius: 18px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
+  #sim { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: calc(10px + env(safe-area-inset-left, 0px)); width: 250px; background: var(--panel); color: var(--fg);
+         border-radius: 10px; padding: 12px; font-size: 13px; display: none; z-index: 10; box-shadow: 0 4px 20px #000a; }
+  #sim h3 { margin: 0 0 8px; font-size: 14px; }
+  #sim button { margin: 2px 0; width: 100%; padding: 6px; border: 0; border-radius: 6px; background: var(--btn); color: #fff; cursor: pointer; font-size: 13px; }
+  #sim button:hover, #simToggle:hover { background: var(--btn-hover); }
+  #sim button:focus-visible, #simToggle:focus-visible { outline: 2px solid #ffd166; }
+  #sim .row { display: flex; gap: 4px; } #sim .row button { flex: 1; }
+  #sim input[type=range] { width: 100%; }
+  #sim .muted { color: var(--muted); font-size: 12px; margin-top: 6px; line-height: 1.4; }
+</style>
+</head><body>
+<canvas id="game" width="1080" height="1920"></canvas>
+<div id="start"></div>
+<button id="simToggle" type="button">Test paneli</button>
+<div id="sim">
+  <h3>Test paneli</h3>
+  <div class="row"><button type="button" data-c="1">+1 yorum</button><button type="button" data-c="10">+10</button><button type="button" data-c="50">+50</button></div>
+  <div class="row"><button type="button" id="bKiz">"kız" yaz</button><button type="button" id="bErkek">"erkek" yaz</button></div>
+  <div class="row"><button type="button" id="bLike">Beğeni ×20</button><button type="button" id="bFollow">Takip</button></div>
+  <div class="row"><button type="button" data-g="Gül,1">Gül (1)</button><button type="button" data-g="Donut,30">Donut (30)</button></div>
+  <div class="row"><button type="button" data-g="Kalp Eller,100">Kalp (100)</button><button type="button" data-g="Aslan,29999">Aslan</button></div>
+  <div style="margin-top:8px">Otomatik akış: <b id="rateLbl">0</b> yorum/dk</div>
+  <input id="rate" type="range" min="0" max="600" step="10" value="0">
+  <button type="button" id="bClear">Halayı boşalt</button>
+  <button type="button" id="bNext" hidden>Sonraki şarkı</button>
+  <div class="muted">Demo: izleyiciler sahte, müzik yok.<br>Köprü: <b id="bridgeStatus">demo</b> · Oyuncu: <b id="cnt">0</b> · FPS: <b id="fps">0</b></div>
+</div>
+<script>window.DEMO = true; window.DEMO_RATE = 90;</script>
+<script src="game/config.js"></script>
+<script src="game/playlist.js"></script>
+<script src="game/game.js"></script>
+</body></html>
