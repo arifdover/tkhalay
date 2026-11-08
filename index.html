@@ -5,7 +5,8 @@
   html, body { height: 100%; }
   body { background: var(--bg); color: var(--fg); overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: "Segoe UI", Arial, sans-serif; }
   #game { display: block; }
-  #start { display: none; }
+  #start { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.55); z-index: 12; cursor: pointer; }
+  #start span { background: #ffd166; color: #2a1020; font-weight: 800; font-size: 20px; padding: 14px 26px; border-radius: 30px; }
   #simToggle { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); right: calc(10px + env(safe-area-inset-right, 0px)); z-index: 11; display: none;
                background: var(--panel); color: var(--fg); border: 1px solid #555; border-radius: 18px; padding: 8px 14px; font-size: 14px; cursor: pointer; }
   #sim { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: calc(10px + env(safe-area-inset-left, 0px)); width: 250px; background: var(--panel); color: var(--fg);
@@ -20,7 +21,7 @@
 </style>
 </head><body>
 <canvas id="game" width="1080" height="1920"></canvas>
-<div id="start"></div>
+<div id="start"><span>▶ Müzikle başlat</span></div>
 <button id="simToggle" type="button">Test paneli</button>
 <div id="sim">
   <h3>Test paneli</h3>
@@ -33,7 +34,7 @@
   <input id="rate" type="range" min="0" max="600" step="10" value="0">
   <button type="button" id="bClear">Halayı boşalt</button>
   <button type="button" id="bNext" hidden>Sonraki şarkı</button>
-  <div class="muted">Demo: izleyiciler sahte, müzik yok.<br>Köprü: <b id="bridgeStatus">demo</b> · Oyuncu: <b id="cnt">0</b> · FPS: <b id="fps">0</b></div>
+  <div class="muted">Demo: izleyiciler sahte.<br>Köprü: <b id="bridgeStatus">demo</b> · Oyuncu: <b id="cnt">0</b> · FPS: <b id="fps">0</b></div>
 </div>
 <script>window.DEMO = true; window.DEMO_RATE = 90;</script>
 <script src="game/config.js"></script>
