@@ -687,7 +687,8 @@ const Music = (() => {
 
 // ---------------------------------------------------------------- köprü bağlantısı (WebSocket)
 const bridgeStatus = document.getElementById("bridgeStatus");
-if (!window.DEMO) (function connect() {
+const RENDER = /[?&]render=1/.test(location.search);   // video üretimi: zaman dışarıdan ilerletilir
+if (!window.DEMO && !RENDER) (function connect() {
   let ws;
   try { ws = new WebSocket(C.BRIDGE_URL); } catch (e) { setTimeout(connect, 3000); return; }
   ws.onopen = () => { bridgeStatus.textContent = "bağlı ✓"; bridgeStatus.style.color = "#80ed99"; };
@@ -766,6 +767,7 @@ function step(dt) {
   for (let i = sparks.length - 1; i >= 0; i--) { const p = sparks[i]; p.life -= dt; p.vy += 500 * dt; p.x += p.vx * dt; p.y += p.vy * dt; if (p.life <= 0) sparks.splice(i, 1); }
 }
 function frame(t) {
+  if (RENDER) { requestAnimationFrame(frame); return; }
   const dt = Math.min(0.1, (t - last) / 1000); last = t;
   step(dt);
   render();
